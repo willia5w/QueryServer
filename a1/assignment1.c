@@ -14,16 +14,7 @@ void Victory(int n) {
  * This function should print n numbers all in one line
  * where each number i should repeat i times.
  *
- * For example, print_numbers(5) -> 122333444455555
- *              print_numbers(3) -> 122333
- */
-void PrintNumbers(int n) {
-	for (int i = 1; i <= n; i++) {
-	  for (int j = 0; j < i; j++) {
-	    printf("%d", i);
-	  }
-	}
-	printf("\n");
+
 }
 
 /*
