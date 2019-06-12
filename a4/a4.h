@@ -5,6 +5,7 @@
 #define kNumCardsInDeck 24
 #define kFullDeck 23
 #define kEmptyDeck -1
+#define kEmptyHand 0
 
 enum suit {HEARTS, CLUBS, SPADES, DIAMONDS};
 
@@ -15,7 +16,7 @@ enum name {NINE = 9, TEN = 10, JACK = 11, QUEEN = 12, KING = 13, ACE = 14};
 typedef enum name Name;
 
 // A note: The value field is here for challenge problems.
-// You can safely ignore it untill you are working on challenges.
+// You can safely ignore it until you are working on challenges.
 struct card {
   Name name;  // The name of a card, such as Ace, King, etc.
   Suit suit;  // The suit of a card (Spades, Diamond, etc)

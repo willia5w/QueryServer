@@ -311,7 +311,7 @@ void TestShuffle() {
   DestroyDeck(deck);
   EndTest();
 }
-/*
+
 void TestCreateHand() {
   StartTest("CreateHand");
 
@@ -322,7 +322,7 @@ void TestCreateHand() {
 
   DestroyHand(hand);
   EndTest();
- }
+}
 
 void TestAddCardToHand() {
   StartTest("add_card_to_hand");
@@ -411,6 +411,7 @@ void TestRemoveCardFromHand() {
 
   EndTest();
 }
+
 
 void TestDeal() {
   StartTest("deal");
@@ -567,7 +568,7 @@ void TestShuffleHand() {
   StartTest("shuffle_hand");
   EndTest();
 }
-*/
+
 void Part1Tests() {
   TestCreateDeck();
   TestPushCardToDeck();
@@ -577,7 +578,7 @@ void Part1Tests() {
   TestIsDeckEmpty();
   TestShuffle();
 }
-/*
+
 void Part2Tests() {
   TestCreateHand();
   TestAddCardToHand();
@@ -585,16 +586,17 @@ void Part2Tests() {
   TestDeal();
   TestIsLegalMove();
   TestWhoWon();
-  TestGetBestMove();
-  TestSortHand();
-  TestShuffleHand();
+//  TestGetBestMove();
+//  TestSortHand();
+//  TestShuffleHand();
 }
-*/
+
 int main(void) {
   srand(21774);
 
   Part1Tests();
-/*  Part2Tests();
-*/
+  Part2Tests();
+
   return EXIT_SUCCESS;
 }
+

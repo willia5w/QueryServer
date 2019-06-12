@@ -85,31 +85,6 @@ void DestroyDeck(Deck* deck) {
     free(deck);
 }
 
-// Shuffle the deck.
-// Put them in a random order.
-// Uses the Fischer-Yates algorithm from geeksforgeeks.org
-void Shuffle(Deck *aDeck) {
-  Card* temp;
-  for (int i = aDeck->top_card; i > 0; i--) {
-    int j = rand() % (kNumCardsInDeck);  
-    temp = aDeck->cards[i];
-    aDeck->cards[i] = aDeck->cards[j];
-    aDeck->cards[j] = temp;
-  }
-} 
 
-// Create a Deck for this game, and add any
-// needed cards to the deck.
-// Return a pointer to the deck to be used for the game
-Deck* PopulateDeck() {
-  Deck* deck = CreateDeck();
-  Card* card;
-  for (int s = HEARTS; s <= DIAMONDS; s++) {
-    for (int n = NINE; n <= ACE; n++) {
-      card = CreateCard(s, n);
-      deck = PushCardToDeck(card, deck);
-    }
-   }
-  return deck;
-}
+
 
