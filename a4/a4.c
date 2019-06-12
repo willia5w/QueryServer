@@ -16,7 +16,7 @@
 // It is the responsibility of the caller to call destroyCard()
 // when it is done with the Card.
 Card* CreateCard(Suit suit, Name name) {
-    Card* card = (Card*)malloc(sizeof(card));
+    Card* card = (Card*)malloc(sizeof(Card));
     if (card == NULL) {
         printf("Unable to malloc card");
         return NULL;
@@ -39,13 +39,12 @@ void DestroyCard(Card* card) {
 // Creates a Hand struct and initializes any necessary fields.
 // Returns a pointer to the new Hand, which has been allocated on the heap.
 Hand* CreateHand() {
-    Hand* hand = (Hand*)malloc(sizeof(kNumCardsInHand));
+    Hand* hand = (Hand*)malloc(sizeof(Hand));
     if (hand == NULL) {
         printf("Unable to malloc hand");
         return NULL;
     }
     hand->num_cards_in_hand = kEmptyHand;
-    CardNode *first_card;  // Initialize card_node pointer
     hand->first_card = NULL;
     return hand;
 }
@@ -66,14 +65,14 @@ CardNode* CreateCardNode(Card* card) {
 // Creates a CardNode to be used for adding a card to a hand
 void DestroyCardNode(CardNode* node) {
     if (node->prev_card == NULL & node->this_card == NULL
-    & node->next_card == NULL) {
+        & node->next_card == NULL) {
         free(node->prev_card);
         free(node->this_card);
         free(node->next_card);
         free(node);
     }
     if (node->prev_card == NULL & node->this_card == NULL
-    & node->next_card != NULL) {
+        & node->next_card != NULL) {
         free(node->prev_card);
         free(node->this_card);
         node->prev_card = NULL;
@@ -82,12 +81,14 @@ void DestroyCardNode(CardNode* node) {
     }
 
     if (node->prev_card != NULL & node->this_card == NULL
-    & node->next_card == NULL) {
+        & node->next_card == NULL) {
         node->prev_card = NULL;
         free(node->prev_card);
         free(node->this_card);
         free(node->next_card);
         free(node);
+    } else {
+    free(node);
     }
 }
 
@@ -117,35 +118,41 @@ Card* RemoveCardFromHand(Card *card, Hand *hand) {
     CardNode* check_card = hand->first_card;
 
     if (check_card->prev_card == NULL && check_card->next_card == NULL) {
-        hand->num_cards_in_hand--;
+        DestroyCardNode(check_card);
         hand->first_card = NULL;
-        return check_card->this_card;
+        hand->num_cards_in_hand--;
+        return card;
     }
 
     while (check_card->this_card->name != card->name &&
-          check_card->this_card->suit != card->suit) {
+           check_card->this_card->suit != card->suit) {
         check_card = check_card->next_card;
     }
     // When found card is the current first card in Hand
     if (check_card->prev_card == NULL) {
-        hand->first_card = check_card->next_card;
         check_card->next_card->prev_card = NULL;
+        hand->first_card = check_card->next_card;
         check_card->next_card = NULL;
         hand->num_cards_in_hand--;
-        return check_card->this_card;
+        DestroyCardNode(check_card);
+        return card;
     }
     // When found card is the current last card in Hand
     if (check_card->next_card == NULL && check_card->prev_card != NULL) {
         check_card->prev_card->next_card = NULL;
         check_card->prev_card = NULL;
+        DestroyCardNode(check_card);
         hand->num_cards_in_hand--;
-        return check_card->this_card;
+        return card;
+
     } else {  // When found card in in between other cards
         check_card->prev_card->next_card = check_card->next_card;
         check_card->next_card->prev_card = check_card->prev_card;
         check_card->prev_card = NULL;
         check_card->next_card = NULL;
-        return check_card->this_card;
+        DestroyCardNode(check_card);
+        hand->num_cards_in_hand--;
+        return card;
     }
 }
 
@@ -232,7 +239,7 @@ int IsLegalMove(Hand *hand, Card *lead_card, Card *played_card) {
         }
         if (hand->first_card->next_card != NULL) {
             hand->first_card->this_card
-            = hand->first_card->next_card->this_card;
+                    = hand->first_card->next_card->this_card;
         }
     }
     return 1;  // Played card is legal, no suit match in player hand
@@ -245,7 +252,7 @@ int IsLegalMove(Hand *hand, Card *lead_card, Card *played_card) {
 // Returns 1 if the person who led won, 0 if the person who followed won.
 int WhoWon(Card *lead_card, Card *followed_card, Suit trump) {
     if (lead_card->suit == followed_card->suit
-    && trump != followed_card->suit) {
+        && trump != followed_card->suit) {
         if (lead_card->name == followed_card->name) {
             return 1;
         } else {
@@ -253,7 +260,7 @@ int WhoWon(Card *lead_card, Card *followed_card, Suit trump) {
         }
     }
     if (lead_card->suit != followed_card->suit
-    && trump == followed_card->suit) {
+        && trump == followed_card->suit) {
         return 0;
     } else {
         return 1;
@@ -264,11 +271,14 @@ int WhoWon(Card *lead_card, Card *followed_card, Suit trump) {
 // back into the deck.
 void ReturnHandToDeck(Hand *hand, Deck *deck) {
     if (IsHandEmpty(hand) == 0) {
+        CardNode* check = hand->first_card;
         for (int i = 0; i < hand->num_cards_in_hand; i++) {
             PushCardToDeck(RemoveCardFromHand(
-                    hand->first_card->this_card, hand), deck);
-            hand->first_card = hand->first_card->next_card;
-            hand->num_cards_in_hand--;
+                    check->this_card, hand), deck);
+            if (check->next_card != NULL) {
+              check = check->next_card;
+              hand->num_cards_in_hand--;
+             } 
         }
     }
 }
