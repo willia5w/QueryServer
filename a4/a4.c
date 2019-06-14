@@ -94,8 +94,7 @@ Card* RemoveCardFromHand(Card *card, Hand *hand) {
 
     if (check_card != NULL && check_card->prev_card == NULL 
         && check_card->next_card == NULL) {
-        hand->first_card = NULL;
-        check_card = NULL;  
+        hand->first_card = NULL; 
         DestroyCardNode(check_card);
         hand->num_cards_in_hand--;
         return card;
@@ -111,14 +110,12 @@ Card* RemoveCardFromHand(Card *card, Hand *hand) {
         hand->first_card = check_card->next_card;
         hand->num_cards_in_hand--;
         DestroyCardNode(check_card);
-        check_card = NULL;
         return card;
     } else if (check_card->this_card == card && check_card->next_card == NULL
          && check_card->prev_card != NULL) {
         check_card->prev_card->next_card = NULL;
         check_card->prev_card = NULL;
         DestroyCardNode(check_card);
-        check_card = NULL; 
         hand->num_cards_in_hand--;
         return card;
     } else if (check_card->this_card == card
@@ -129,7 +126,6 @@ Card* RemoveCardFromHand(Card *card, Hand *hand) {
         check_card->prev_card = NULL;
         check_card->next_card = NULL;
         DestroyCardNode(check_card);
-        check_card = NULL; 
         hand->num_cards_in_hand--;
         return card;
     }

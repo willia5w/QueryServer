@@ -26,8 +26,8 @@ Deck* CreateDeck() {
 // Returns a pointer to the deck.
 Deck* PushCardToDeck(Card* card, Deck* deck) {
     if (deck->top_card < kNumCardsInDeck - 1) {
-    deck->top_card++;
-    deck->cards[deck->top_card] = card;
+        deck->top_card++;
+        deck->cards[deck->top_card] = card;
     }
     return deck;
 }
@@ -50,7 +50,7 @@ Card* PeekAtTopCard(Deck* deck) {
 // Returns a pointer to the top card in the deck.
 Card* PopCardFromDeck(Deck* deck) {
     Card* pop_card;
-    if (deck->top_card != kEmptyDeck) {
+    if (IsDeckEmpty(deck) == 0) {
       pop_card = deck->cards[deck->top_card];
       deck->top_card--;
       return pop_card;
@@ -62,10 +62,11 @@ Card* PopCardFromDeck(Deck* deck) {
 // Determines if the deck is empty.
 // Returns 1 if the Deck is empty, 0 otherwise.
 int IsDeckEmpty(Deck* deck) {
-    if (deck->top_card == -1) {
+    if (deck->top_card == kEmptyDeck) {
         return 1;
-    }
+    } else {
     return 0;
+    }
 }
 
 // Destroys the deck, freeing any memory allocated
@@ -75,11 +76,10 @@ int IsDeckEmpty(Deck* deck) {
 void DestroyDeck(Deck* deck) {
     if (IsDeckEmpty(deck) == 1) {
       free(deck);
-    } else if (IsDeckEmpty(deck) == 1) {   
+    } else if (IsDeckEmpty(deck) == 0) {   
       while (IsDeckEmpty(deck) == 0) {
-        int i = deck->top_card + 1;
-        DestroyCard(deck->cards[i]);
-        deck->top_card--;  
+        int i = deck->top_card;
+        DestroyCard(PopCardFromDeck(deck));
       }
     free(deck);
     deck = NULL;
