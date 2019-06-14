@@ -18,10 +18,6 @@
 // Returns a pointer to the deck, which has been allocated on the heap.
 Deck* CreateDeck() {
     Deck* deck = (Deck*)malloc(sizeof(Deck));
-    if (deck == NULL) {
-        printf("Unable to malloc deck");
-        return NULL;
-    }
     deck->top_card = kEmptyDeck;
     return deck;
 }
@@ -29,11 +25,11 @@ Deck* CreateDeck() {
 // Adds a card to the top of the deck.
 // Returns a pointer to the deck.
 Deck* PushCardToDeck(Card* card, Deck* deck) {
-    if (deck->top_card < kFullDeck) {
-        deck->top_card++;
-        deck->cards[deck->top_card] = card;
-        return deck;
+    if (deck->top_card < kNumCardsInDeck - 1) {
+    deck->top_card++;
+    deck->cards[deck->top_card] = card;
     }
+    return deck;
 }
 
 // Shows the top card, but does not remove it from the stack.
@@ -77,12 +73,17 @@ int IsDeckEmpty(Deck* deck) {
 // DestroyDeck should call DestroyCard on all of the
 // cards in the deck.
 void DestroyDeck(Deck* deck) {
-    if (IsDeckEmpty(deck) != 1) {
-      for (int i = 0; i <= deck->top_card; i++) {
+    if (IsDeckEmpty(deck) == 1) {
+      free(deck);
+    } else if (IsDeckEmpty(deck) == 1) {   
+      while (IsDeckEmpty(deck) == 0) {
+        int i = deck->top_card + 1;
         DestroyCard(deck->cards[i]);
+        deck->top_card--;  
       }
-    }
     free(deck);
+    deck = NULL;
+    }
 }
 
 

@@ -62,34 +62,9 @@ CardNode* CreateCardNode(Card* card) {
     return new_card;
 }
 
-// Creates a CardNode to be used for adding a card to a hand
+// Destroys a CardNode when a Card is removed from a Hand.
 void DestroyCardNode(CardNode* node) {
-    if (node->prev_card == NULL & node->this_card == NULL
-        & node->next_card == NULL) {
-        free(node->prev_card);
-        free(node->this_card);
-        free(node->next_card);
-        free(node);
-    }
-    if (node->prev_card == NULL & node->this_card == NULL
-        & node->next_card != NULL) {
-        free(node->prev_card);
-        free(node->this_card);
-        node->prev_card = NULL;
-        free(node->prev_card);
-        free(node);
-    }
-
-    if (node->prev_card != NULL & node->this_card == NULL
-        & node->next_card == NULL) {
-        node->prev_card = NULL;
-        free(node->prev_card);
-        free(node->this_card);
-        free(node->next_card);
-        free(node);
-    } else {
     free(node);
-    }
 }
 
 // Adds a card to the hand.
@@ -117,40 +92,44 @@ void AddCardToHand(Card *card, Hand *hand) {
 Card* RemoveCardFromHand(Card *card, Hand *hand) {
     CardNode* check_card = hand->first_card;
 
-    if (check_card->prev_card == NULL && check_card->next_card == NULL) {
-        DestroyCardNode(check_card);
+    if (check_card != NULL && check_card->prev_card == NULL 
+        && check_card->next_card == NULL) {
         hand->first_card = NULL;
+        check_card = NULL;  
+        DestroyCardNode(check_card);
         hand->num_cards_in_hand--;
         return card;
     }
-
-    while (check_card->this_card->name != card->name &&
-           check_card->this_card->suit != card->suit) {
+       
+    while (check_card != NULL && check_card->this_card != card) {
         check_card = check_card->next_card;
     }
     // When found card is the current first card in Hand
-    if (check_card->prev_card == NULL) {
+    if (check_card->this_card == card && check_card->prev_card == NULL 
+        && check_card->next_card != NULL) {
         check_card->next_card->prev_card = NULL;
         hand->first_card = check_card->next_card;
-        check_card->next_card = NULL;
         hand->num_cards_in_hand--;
         DestroyCardNode(check_card);
+        check_card = NULL;
         return card;
-    }
-    // When found card is the current last card in Hand
-    if (check_card->next_card == NULL && check_card->prev_card != NULL) {
+    } else if (check_card->this_card == card && check_card->next_card == NULL
+         && check_card->prev_card != NULL) {
         check_card->prev_card->next_card = NULL;
         check_card->prev_card = NULL;
         DestroyCardNode(check_card);
+        check_card = NULL; 
         hand->num_cards_in_hand--;
         return card;
-
-    } else {  // When found card in in between other cards
+    } else if (check_card->this_card == card
+         && check_card != NULL) {
+          // When found card in in between other cards
         check_card->prev_card->next_card = check_card->next_card;
         check_card->next_card->prev_card = check_card->prev_card;
         check_card->prev_card = NULL;
         check_card->next_card = NULL;
         DestroyCardNode(check_card);
+        check_card = NULL; 
         hand->num_cards_in_hand--;
         return card;
     }
@@ -169,13 +148,6 @@ int IsHandEmpty(Hand* hand) {
 
 // Destroys the hand, freeing any memory allocated for it.
 void DestroyHand(Hand* hand) {
-    if (hand->num_cards_in_hand > kEmptyHand) {
-        for (int i = 0; i <= hand->num_cards_in_hand ; i++) {
-            DestroyCardNode(hand->first_card->next_card);
-        }
-        // Free last card after freeing all other Nodes
-        free(hand->first_card->this_card);
-    }
     free(hand);
 }
 
@@ -212,11 +184,9 @@ void Deal(Deck *aDeck, Hand *p1hand, Hand *p2hand) {
 // Return a pointer to the deck to be used for the game
 Deck* PopulateDeck() {
     Deck* deck = CreateDeck();
-    Card* card;
     for (int s = HEARTS; s <= DIAMONDS; s++) {
         for (int n = NINE; n <= ACE; n++) {
-            card = CreateCard(s, n);
-            deck = PushCardToDeck(card, deck);
+            deck = PushCardToDeck(CreateCard(s, n), deck);
         }
     }
     return deck;
@@ -270,16 +240,10 @@ int WhoWon(Card *lead_card, Card *followed_card, Suit trump) {
 // Take all the cards out of a given hand, and put them
 // back into the deck.
 void ReturnHandToDeck(Hand *hand, Deck *deck) {
-    if (IsHandEmpty(hand) == 0) {
+     while (hand->num_cards_in_hand > 0) {
         CardNode* check = hand->first_card;
-        for (int i = 0; i < hand->num_cards_in_hand; i++) {
-            PushCardToDeck(RemoveCardFromHand(
-                    check->this_card, hand), deck);
-            if (check->next_card != NULL) {
-              check = check->next_card;
-              hand->num_cards_in_hand--;
-             } 
-        }
+        Card* removed_card = RemoveCardFromHand(check->this_card, hand);
+        deck = PushCardToDeck(removed_card, deck);
     }
 }
 
