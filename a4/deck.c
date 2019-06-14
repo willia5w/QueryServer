@@ -51,8 +51,7 @@ Card* PeekAtTopCard(Deck* deck) {
 Card* PopCardFromDeck(Deck* deck) {
     Card* pop_card;
     if (IsDeckEmpty(deck) == 0) {
-      pop_card = deck->cards[deck->top_card];
-      deck->top_card--;
+      pop_card = deck->cards[deck->top_card--];
       return pop_card;
     }
     return NULL;
@@ -73,17 +72,11 @@ int IsDeckEmpty(Deck* deck) {
 // for this deck (the cards and the deck).
 // DestroyDeck should call DestroyCard on all of the
 // cards in the deck.
-void DestroyDeck(Deck* deck) {
-    if (IsDeckEmpty(deck) == 1) {
-      free(deck);
-    } else if (IsDeckEmpty(deck) == 0) {   
-      while (IsDeckEmpty(deck) == 0) {
-        int i = deck->top_card;
-        DestroyCard(PopCardFromDeck(deck));
-      }
+void DestroyDeck(Deck* deck) {  
+    while (IsDeckEmpty(deck) == 0) {
+        DestroyCard(PopCardFromDeck(deck)); 
+    } 
     free(deck);
-    deck = NULL;
-    }
 }
 
 

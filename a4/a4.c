@@ -91,36 +91,32 @@ void AddCardToHand(Card *card, Hand *hand) {
 // Returns a pointer to the card that is no longer in the hand.
 Card* RemoveCardFromHand(Card *card, Hand *hand) {
     CardNode* check_card = hand->first_card;
-
-    if (check_card != NULL && check_card->prev_card == NULL 
-        && check_card->next_card == NULL) {
-        hand->first_card = NULL; 
+  
+    if (check_card->prev_card == NULL 
+        && check_card->next_card == NULL) { 
         DestroyCardNode(check_card);
+        hand->first_card = NULL;
         hand->num_cards_in_hand--;
         return card;
     }
-       
-    while (check_card != NULL && check_card->this_card != card) {
+    while (check_card->this_card != card) {
         check_card = check_card->next_card;
     }
-    // When found card is the current first card in Hand
-    if (check_card->this_card == card && check_card->prev_card == NULL 
+    if (check_card->prev_card == NULL 
         && check_card->next_card != NULL) {
         check_card->next_card->prev_card = NULL;
         hand->first_card = check_card->next_card;
         hand->num_cards_in_hand--;
         DestroyCardNode(check_card);
         return card;
-    } else if (check_card->this_card == card && check_card->next_card == NULL
+    } else if (check_card->next_card == NULL
          && check_card->prev_card != NULL) {
         check_card->prev_card->next_card = NULL;
         check_card->prev_card = NULL;
         DestroyCardNode(check_card);
         hand->num_cards_in_hand--;
         return card;
-    } else if (check_card->this_card == card
-         && check_card != NULL) {
-          // When found card in in between other cards
+    } else {
         check_card->prev_card->next_card = check_card->next_card;
         check_card->next_card->prev_card = check_card->prev_card;
         check_card->prev_card = NULL;
