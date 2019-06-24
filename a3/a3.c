@@ -142,121 +142,112 @@ void FormatName(Name *name, char format) {
   case 's': Small(name);
           break;    
   default: printf("Invalid format");
-;          break;
+           break;
   }
 }
 
 void FillName(Name *name, char format, char *dest) {
   format = tolower(format);
+  char new_first[kSize];
+  char new_middle[kSize];
+  char new_last[kSize];
+  char mid_init[1];
+  int i = 0;
+
   switch (format)
   {
   case 'b': 
-  char new_first[kSize];
-  new_first[0] = toupper(name->first[0]);
-  int i = 0;
-  for (i = 1; i < strlen(name->first); i++) {
-    new_first[i] = tolower(name->first[i]);
-  } 
-  new_first[strlen(name->first)] = '\0';
-  strcpy(dest, new_first);
-  strcat(dest, " ");
-  char new_middle[kSize];
-  if (name->middle != NULL) {
-    new_middle[0] = toupper(name->middle[0]);
-    for (i = 1; i < strlen(name->middle); i++) {
-      new_middle[i] = tolower(name->middle[i]);
-    }
-  new_middle[strlen(name->middle)] = '\0';
-  strcat(dest, new_middle);
-  strcat(dest, " ");
-  }
-  char new_last[kSize];
-  new_last[0] = toupper(name->last[0]);
-  for (i = 1; i < strlen(name->last); i++) {
-    new_last[i] = tolower(name->last[i]);
-  }
-  new_last[strlen(name->last)] = '\0';
-  strcat(dest, new_last);
-  break;
+          new_first[0] = toupper(name->first[0]);
+          for (i = 1; i < strlen(name->first); i++) {
+            new_first[i] = tolower(name->first[i]);
+          } 
+          new_first[strlen(name->first)] = '\0';
+          strcpy(dest, new_first);
+          strcat(dest, " ");
+          if (name->middle != NULL) {
+            new_middle[0] = toupper(name->middle[0]);
+            for (i = 1; i < strlen(name->middle); i++) {
+              new_middle[i] = tolower(name->middle[i]);
+            }
+          new_middle[strlen(name->middle)] = '\0';
+          strcat(dest, new_middle);
+          strcat(dest, " ");
+          }
+
+          new_last[0] = toupper(name->last[0]);
+          for (i = 1; i < strlen(name->last); i++) {
+            new_last[i] = tolower(name->last[i]);
+          }
+          new_last[strlen(name->last)] = '\0';
+          strcat(dest, new_last);
+          break;
 
   case 'l': 
-  char new_last[kSize];
-  new_last[0] = toupper(name->last[0]);
-  int i = 0;
-  for (i = 1; i < strlen(name->last); i++) {
-     new_last[i] = tolower(name->last[i]);
-  }  
-  new_last[strlen(name->last)] = '\0';
-  strcpy(dest, new_last);
-  strcat(dest, ",");
-  strcat(dest, " ");
-  char new_first[kSize];
-  new_first[0] = toupper(name->first[0]);
-  for (i = 1; i < strlen(name->first); i++) {
-     new_first[i] = tolower(name->first[i]);
-  }
-  new_first[strlen(name->first)] = '\0';
-  strcat(dest, new_first);
-  break;
+          new_last[0] = toupper(name->last[0]);
+          for (i = 1; i < strlen(name->last); i++) {
+            new_last[i] = tolower(name->last[i]);
+          }  
+          new_last[strlen(name->last)] = '\0';
+          strcpy(dest, new_last);
+          strcat(dest, ",");
+          strcat(dest, " ");
+          new_first[0] = toupper(name->first[0]);
+          for (i = 1; i < strlen(name->first); i++) {
+            new_first[i] = tolower(name->first[i]);
+          }
+          new_first[strlen(name->first)] = '\0';
+          strcat(dest, new_first);
+          break;
 
   case 'r': 
-  char new_first[kSize];
-  new_first[0] = toupper(name->first[0]);
-  int i = 0;
-  for (i = 1; i < strlen(name->first); i++) {
-    new_first[i] = tolower(name->first[i]);
-  }
-  new_first[strlen(name->first)] = '\0';
-  strcpy(dest, new_first);
-  strcat(dest, " ");
-  char new_last[kSize];
-  new_last[0] = toupper(name->last[0]);
-  for (i = 1; i < strlen(name->last); i++) {
-    new_last[i] = tolower(name->last[i]);
-  }
-  new_last[strlen(name->last)] = '\0';
-  strcat(dest, new_last);
-  break;
+          new_first[0] = toupper(name->first[0]);
+          for (i = 1; i < strlen(name->first); i++) {
+            new_first[i] = tolower(name->first[i]);
+          }
+          new_first[strlen(name->first)] = '\0';
+          strcpy(dest, new_first);
+          strcat(dest, " ");
+          new_last[0] = toupper(name->last[0]);
+          for (i = 1; i < strlen(name->last); i++) {
+            new_last[i] = tolower(name->last[i]);
+          }
+          new_last[strlen(name->last)] = '\0';
+          strcat(dest, new_last);
+          break;
 
   case 'm':
-  char new_first[kSize];
-  new_first[0] = toupper(name->first[0]);
-  int i = 0;
-  for (i = 1; i < strlen(name->first); i++) {
-    new_first[i] = tolower(name->first[i]);
-  }
-  new_first[strlen(name->first)] = '\0';
-  strcpy(dest, new_first);
-  strcat(dest, " ");
-  // Middle name (optional)
-  char mid_init[1];
-  if (name->middle != NULL) {
-    mid_init[0] = toupper(name->middle[0]);
-    strcat(dest, mid_init);
-    strcat(dest, ".");
-    strcat(dest, " ");
-  }
-  char new_last[kSize];
-  new_last[0] = toupper(name->last[0]);
-  for (i = 1; i < strlen(name->last); i++) {
-    new_last[i] = tolower(name->last[i]);
-  }
-  new_last[strlen(name->last)] = '\0';
-  strcat(dest, new_last);
-  break;
+          new_first[0] = toupper(name->first[0]);
+          for (i = 1; i < strlen(name->first); i++) {
+            new_first[i] = tolower(name->first[i]);
+          }
+          new_first[strlen(name->first)] = '\0';
+          strcpy(dest, new_first);
+          strcat(dest, " ");
+          // Middle name (optional)
+          if (name->middle != NULL) {
+            mid_init[0] = toupper(name->middle[0]);
+            strcat(dest, mid_init);
+            strcat(dest, ".");
+            strcat(dest, " ");
+          }
+          new_last[0] = toupper(name->last[0]);
+          for (i = 1; i < strlen(name->last); i++) {
+            new_last[i] = tolower(name->last[i]);
+          }
+          new_last[strlen(name->last)] = '\0';
+          strcat(dest, new_last);
+          break;
 
   case 's':
-  char new_first[kSize];
-  new_first[0] = toupper(name->first[0]);
-  int i = 0;
-  for (i = 1; i < strlen(name->first); i++) {
-    new_first[i] = tolower(name->first[i]);
-  }
-  new_first[strlen(name->first)] = '\0';
-  strcpy(dest, new_first);
-  break;
+          new_first[0] = toupper(name->first[0]);
+          for (i = 1; i < strlen(name->first); i++) {
+            new_first[i] = tolower(name->first[i]);
+          }
+          new_first[strlen(name->first)] = '\0';
+          strcpy(dest, new_first);
+          break;
   default: printf("Invalid format");
-            break;
+          break;
   }
 }
 // Use qsort, also a switcher would work considering all ordering possibilities
@@ -272,4 +263,5 @@ void ListByName(Name *n1, Name *n2, Name *n3, char format) {
   
   }
 }
+*/
 

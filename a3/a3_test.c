@@ -158,7 +158,7 @@ int TestFillName() {
  
   EndTest();
 }
-/*
+
 int TestListByName() {
   StartTest("Print ListByName");
 
@@ -210,7 +210,7 @@ int TestListByName() {
 
   EndTest();
 }
-*/
+
 int main(void) {
   Init();
 

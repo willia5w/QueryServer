@@ -73,11 +73,24 @@ int IsDeckEmpty(Deck* deck) {
 // DestroyDeck should call DestroyCard on all of the
 // cards in the deck.
 void DestroyDeck(Deck* deck) {  
-    while (IsDeckEmpty(deck) == 0) {
-        DestroyCard(PopCardFromDeck(deck)); 
-    } 
+   // while (IsDeckEmpty(deck) == 0) {
+   //     DestroyCard(PopCardFromDeck(deck)); 
+   // } 
+   // free(deck);
+   // deck = NULL;
+   if (deck->top_card < 0) {
     free(deck);
+    deck = NULL;
+    } else {
+   for (int i = deck->top_card; i>= 0; i--) {
+      free(deck->cards[i]);
+      deck->cards[i] = NULL;
+    }
+    free(deck);
+    deck = NULL;
+    }
 }
+
 
 
 
