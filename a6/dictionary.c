@@ -22,11 +22,13 @@ TrieNode* CreateTrieNode(char letter) {
     trieNode->is_word = 0;
     return trieNode;
 }
-/*
-void DestroyTrieNode(TrieNode* node) {
-    free(node);
-}
 
+void DestroyTrieNode(TrieNode* node) {
+    if (node) {
+        free(node);
+    }
+}
+/*
 int AddWordTrie(DictTrie *trie, char* word) {
  
 }
@@ -145,7 +147,29 @@ DictTrie* CreateDictTrie() {
 }
 
 void DestroyDictTrie(DictTrie* trie) {
+    DestroyTrieChildren(trie->root);
     free(trie);
+}
+
+int BaseChild(TrieNode* node) {
+    for (int i = 0; i <= kNumLetters; i++) {
+        if (node->children[i]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+void DestroyTrieChildren(TrieNode* node) {
+    if (BaseChild(node)) {
+        DestroyTrieChildren(node);
+        node = NULL;
+    } else {
+        for (int i = 0; i <= kNumLetters; i++) {
+            DestroyTrieNode(node->children[i]);
+        }
+        free(node);
+    }
 }
 /*
 void PrintReportHelper(TrieNode* cur_node, char* cur_word, int level) {
