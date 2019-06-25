@@ -133,14 +133,14 @@ void DestroyDictArray(DictArray* dict) {
 }
 */
 DictTrie* CreateDictTrie() {
-    DictTrie* dictTrie= (DictTrie*)malloc(sizeof(dictTrie));
+    DictTrie* dictTrie = (DictTrie*)malloc(sizeof(dictTrie));
     if (dictTrie == NULL) {
         printf("Unable to malloc dictTrie");
         return NULL;
     }
     char rLetter = '*';
     //char rLetter[2] = {'*', '\0'};
-    TrieNode* root = CreateTrieNode(rLetter);
+    dictTrie->root = CreateTrieNode(rLetter);
     return dictTrie;
 }
 
