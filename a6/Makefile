@@ -6,3 +6,6 @@ benchmark: dictionary.c dictionary.h a6.c
 test: a6_test.c dictionary.h dictionary.c
 	gcc -g dictionary.c a6_test.c -o test
 
+bits:
+	gcc -g a6_bits.c -o bit
+	./bit

@@ -48,7 +48,7 @@ void TestCreateTrie() {
   DestroyDictTrie(trie);
   EndTest();
 }
-
+/*
 void TestTrieBasic() {
   StartTest("TrieBasic");
 
@@ -128,17 +128,17 @@ void TestArrayFile() {
   EndTest(); 
 }
 
-
+*/
 int main(void) {
   srand(21774);
 
   TestCreateTrie(); 
-  TestTrieBasic();
+  /*TestTrieBasic();
   TestTrieFile(); 
 
   TestCreateDictArray();
   TestArrayFile();
   TestArrayBasic();
-  
+  */
   return EXIT_SUCCESS;
 }
