@@ -2,9 +2,8 @@
 #define DICT_H
 
 #define kMaxNumWords 450000
-
+#define kMaxWordLen 45
 #define kNumLetters 26
-
 #define kAlphaStart 97
 
 typedef struct dictTrie DictTrie;
@@ -168,3 +167,4 @@ DictArray* LoadDictionaryArray(char *filename);
 void PrintReport(TrieNode* trie);
 
 #endif
+
