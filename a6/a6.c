@@ -18,35 +18,39 @@
 
 
 void BenchmarkArray(char* filename) {
-        FILE *cfPtr;
+    char c[kMaxWordLen];
 
-        if ((cfPtr = fopen("sample.txt", "r")) == NULL) {
-            printf("File could not be opened\n");
-        } else {
-            char c;
+    FILE *cfPtr;
+    if ((cfPtr = fopen(filename, "r")) == NULL) {
+        printf("File could not be opened\n");
+    }
 
-            while (!feof(cfPtr)) {
-                // Reads file character by character
-                c = fgetc(cfPtr);
-                printf("%c\n", c);
-            }
-            fclose(cfPtr);
-        }
-
-        int main(){
-            ReadFile();
-            return 0;
-        }
+    while (fscanf(cfPtr,"%s", c) == 1) {
+        printf("%s\n", c);
+    }
+    fclose(cfPtr); //close dict file
 }
 
-//void BenchmarkTrie(char* filename) {
-  
 
-//}
+void BenchmarkTrie(char* filename) {
+    FILE *cfPtr;
 
-//char lookup(char word, BenchmarkArray(char* filename));
+    if ((cfPtr = fopen(filename, "r")) == NULL) {
+        printf("File could not be opened\n");
+    } else {
+        char c;
+
+        while (!feof(cfPtr)) {
+            // Reads file character by character
+            c = fgetc(cfPtr);
+            printf("%c\n", c);
+        }
+        fclose(cfPtr);
+    }
+}
 
 int main() {
-  BenchmarkArray("wordlist.txt");
-  //BenchmarkTrie("wordlist.txt");
+  BenchmarkArray("wordlist_small.txt");
+  BenchmarkTrie("wordlist_small.txt");
+  return 0;
 }

@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,32 +12,32 @@
 void _assert_fail(const char* expression,
                   const char* file,
                   int line) {
-  fprintf(stderr,
-          "\n**** Assertion '%s' FAILED, file '%s' line '%d' *******.\n",
-          expression,
-          file,
-          line);
+    fprintf(stderr,
+            "\n**** Assertion '%s' FAILED, file '%s' line '%d' *******.\n",
+            expression,
+            file,
+            line);
 }
 
 void _assert_pass(const char *expression,
                   const char *file,
                   int line) {
-  fprintf(stdout,
-          "Assertion '%s' passed, file '%s' line '%d'.\n",
-          expression,
-          file,
-          line);
+    fprintf(stdout,
+            "Assertion '%s' passed, file '%s' line '%d'.\n",
+            expression,
+            file,
+            line);
 }
 
 void StartTest(const char *test) {
-  static int count = 1;
-  printf("Test #%d: %s\n\n", count++, test);
+    static int count = 1;
+    printf("Test #%d: %s\n\n", count++, test);
 }
 
 void EndTest() {
-  printf("\n--------------------------------\n\n");
+    printf("\n--------------------------------\n\n");
 }
-
+/*
 void TestCreateTrie() {
   StartTest("CreateTrie");
 
@@ -62,12 +63,12 @@ void TestTrieBasic() {
 
   assert(ContainsWordTrie(trie, "cat") == 0);
   assert(ContainsWordTrie(trie, "app") == 1);
-  
-  DestroyDictTrie(trie); 
-  
-  EndTest(); 
+
+  DestroyDictTrie(trie);
+
+  EndTest();
 }
-/*
+
 void TestTrieFile() {
   StartTest("TrieFile");
 
@@ -75,48 +76,61 @@ void TestTrieFile() {
   assert(trie != NULL);
   assert(ContainsWordTrie(trie, "aals") == 1);
   assert(ContainsWordTrie(trie, "peter") == 0);
-  
-  EndTest(); 
+
+  EndTest();
 }
-
+*/
 void TestCreateDictArray() {
-  StartTest("CreateDictArray");
+    StartTest("CreateDictArray");
 
-  DictArray* array = CreateDictArray();
+    DictArray* array = CreateDictArray();
 
-  assert(array != NULL);
+    assert(array != NULL);
 
-  DestroyDictArray(array); 
-  
-  EndTest(); 
+    DestroyDictArray(array);
+
+    EndTest();
 }
 
 
 void TestArrayBasic() {
-  StartTest("ArrayBasic");
+    StartTest("ArrayBasic");
 
-  DictArray* array = CreateDictArray();
+    DictArray* array = CreateDictArray();
 
-  assert(array != NULL);
-  AddWordArray(array, "apple");
-  AddWordArray(array, "apples");
-  AddWordArray(array, "banana");
-  AddWordArray(array, "bespoke");
-  AddWordArray(array, "cherry");
+    assert(array != NULL);
+    AddWordArray(array, "apple");
+    AddWordArray(array, "apples");
+    AddWordArray(array, "banana");
+    AddWordArray(array, "bespoke");
+    AddWordArray(array, "cherry");
 
-  assert(array->num_words == 5);
-  
-  assert(ContainsWordArray(array, "apple") == 1);
-  assert(ContainsWordArray(array, "cherry") == 1);
-  assert(ContainsWordArray(array, "zebra") == 0); 
+    assert(array->num_words == 5);
 
-  DestroyDictArray(array); 
-  
-  EndTest(); 
+    assert(ContainsWordArray(array, "apple") == 1);
+    assert(ContainsWordArray(array, "cherry") == 1);
+    assert(ContainsWordArray(array, "zebra") == 0);
+
+    DestroyDictArray(array);
+
+    EndTest();
 }
 
 
+/*
+void TestArrayFile() {
+  StartTest("ArrayFile");
 
+  DictArray* array = LoadDictionaryArray("wordlist_small.txt");
+  assert(array != NULL);
+  assert(ContainsWordArray(array, "aals") == 1);
+  assert(ContainsWordArray(array, "peter") == 0);
+
+  EndTest();
+}
+*/
+
+/*
 void TestArrayFile() {
   StartTest("ArrayFile");
 
@@ -127,18 +141,18 @@ void TestArrayFile() {
   
   EndTest(); 
 }
-
 */
+
 int main(void) {
   srand(21774);
+    /*
+      TestCreateTrie();
+      TestTrieBasic();
+      TestTrieFile();
+      */
+      TestCreateDictArray();
+      // TestArrayFile();
+      TestArrayBasic();
 
-  TestCreateTrie(); 
-  TestTrieBasic();
-    /*TestTrieFile();
-
-    TestCreateDictArray();
-    TestArrayFile();
-    TestArrayBasic();
-    */
   return EXIT_SUCCESS;
 }

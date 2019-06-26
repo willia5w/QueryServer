@@ -2,9 +2,8 @@
 #define DICT_H
 
 #define kMaxNumWords 450000
-
+#define kMaxWordLen 45
 #define kNumLetters 26
-
 #define kAlphaStart 97
 
 typedef struct dictTrie DictTrie;
@@ -135,19 +134,6 @@ int ContainsWordArray(DictArray *dict, char* word);
 // ====================================
 // HELPER FUNCTIONS
 // ====================================
-
-/**
- * Helper method to determine base case of recursive node deletion.
- * Returns: 1 if current node is a leaf.
- *          0 if current node is a parent.
- */
-int BaseChild(TrieNode*);
-
-/**
- * Destroys all child nodes up until the children of the root.
- * Frees all the children TrieNodes up to the root.
- */
-void DestroyTrieChildren(DictTrie*);
 
 /**
  * Creates and returns a DictTrie that is populated with
