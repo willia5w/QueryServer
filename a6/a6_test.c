@@ -37,7 +37,7 @@ void StartTest(const char *test) {
 void EndTest() {
     printf("\n--------------------------------\n\n");
 }
-
+/*
 void TestCreateTrie() {
   StartTest("CreateTrie");
 
@@ -76,12 +76,18 @@ void TestTrieFile() {
   assert(trie != NULL);
   assert(ContainsWordTrie(trie, "aals") == 1);
   assert(ContainsWordTrie(trie, "peter") == 0);
+<<<<<<< HEAD
 
   DestroyDictTrie(trie);
     
   EndTest();
 }
+=======
+>>>>>>> c5f5e214615f940c8c0bef5672ff00caebe1a035
 
+  EndTest();
+}
+*/
 void TestCreateDictArray() {
     StartTest("CreateDictArray");
 
@@ -112,12 +118,36 @@ void TestArrayBasic() {
     assert(ContainsWordArray(array, "apple") == 1);
     assert(ContainsWordArray(array, "cherry") == 1);
     assert(ContainsWordArray(array, "zebra") == 0);
+<<<<<<< HEAD
+=======
 
     DestroyDictArray(array);
 
     EndTest();
 }
+>>>>>>> c5f5e214615f940c8c0bef5672ff00caebe1a035
 
+    DestroyDictArray(array);
+
+<<<<<<< HEAD
+    EndTest();
+}
+=======
+/*
+void TestArrayFile() {
+  StartTest("ArrayFile");
+
+  DictArray* array = LoadDictionaryArray("wordlist_small.txt");
+  assert(array != NULL);
+  assert(ContainsWordArray(array, "aals") == 1);
+  assert(ContainsWordArray(array, "peter") == 0);
+
+  EndTest();
+}
+*/
+>>>>>>> c5f5e214615f940c8c0bef5672ff00caebe1a035
+
+/*
 void TestArrayFile() {
   StartTest("ArrayFile");
 
@@ -130,10 +160,23 @@ void TestArrayFile() {
     
   EndTest();
 }
+<<<<<<< HEAD
+=======
+*/
+>>>>>>> c5f5e214615f940c8c0bef5672ff00caebe1a035
 
 int main(void) {
   srand(21774);
+    /*
+      TestCreateTrie();
+      TestTrieBasic();
+      TestTrieFile();
+      */
+      TestCreateDictArray();
+      // TestArrayFile();
+      TestArrayBasic();
 
+<<<<<<< HEAD
       TestCreateTrie();
       TestTrieBasic();
       TestTrieFile();
@@ -142,6 +185,8 @@ int main(void) {
       TestArrayFile();
       TestArrayBasic();
 
+=======
+>>>>>>> c5f5e214615f940c8c0bef5672ff00caebe1a035
   return EXIT_SUCCESS;
 }
 
