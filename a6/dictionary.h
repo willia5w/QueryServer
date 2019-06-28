@@ -136,6 +136,19 @@ int ContainsWordArray(DictArray *dict, char* word);
 // ====================================
 
 /**
+ * Helper method to determine base case of recursive node deletion.
+ * Returns: 1 if current node is a leaf.
+ *          0 if current node is a parent.
+ */
+int BaseChild(TrieNode*);
+
+/**
+ * Destroys all child nodes up until the children of the root.
+ * Frees all the children TrieNodes up to the root.
+ */
+void DestroyTrieChildren(DictTrie*);
+
+/**
  * Creates and returns a DictTrie that is populated with
  * the words found in the provided file.
  * The callers is responsible for eventually destroying the DictTrie.

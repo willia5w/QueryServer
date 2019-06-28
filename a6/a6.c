@@ -18,35 +18,28 @@
 
 
 void BenchmarkArray(char* filename) {
-        FILE *cfPtr;
 
-        if ((cfPtr = fopen("sample.txt", "r")) == NULL) {
-            printf("File could not be opened\n");
-        } else {
-            char c;
-
-            while (!feof(cfPtr)) {
-                // Reads file character by character
-                c = fgetc(cfPtr);
-                printf("%c\n", c);
-            }
-            fclose(cfPtr);
-        }
-
-        int main(){
-            ReadFile();
-            return 0;
-        }
+    clock_t start = clock(), diff;
+    DictArray* dict = LoadDictionaryArray(filename);
+    diff = clock() - start;
+    int msec = diff * 1000 / CLOCKS_PER_SEC;
+    printf("Time taken to load array: %d seconds %d milliseconds", msec/1000, msec%1000);
 }
 
-//void BenchmarkTrie(char* filename) {
-  
 
-//}
+void BenchmarkTrie(char* filename) {
+    clock_t start = clock(), diff;
 
-//char lookup(char word, BenchmarkArray(char* filename));
+    DictTrie* dict = LoadDictionaryTrie(filename);
+
+    diff = clock() - start;
+    int msec = diff * 1000 / CLOCKS_PER_SEC;
+    printf("\nTime taken to load trie: %d seconds %d milliseconds", msec/1000, msec%1000);
+}
 
 int main() {
   BenchmarkArray("wordlist.txt");
-  //BenchmarkTrie("wordlist.txt");
+  BenchmarkTrie("wordlist.txt");
+  return 0;
 }
+

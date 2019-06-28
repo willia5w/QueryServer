@@ -37,7 +37,7 @@ void StartTest(const char *test) {
 void EndTest() {
     printf("\n--------------------------------\n\n");
 }
-/*
+
 void TestCreateTrie() {
   StartTest("CreateTrie");
 
@@ -77,9 +77,11 @@ void TestTrieFile() {
   assert(ContainsWordTrie(trie, "aals") == 1);
   assert(ContainsWordTrie(trie, "peter") == 0);
 
+  DestroyDictTrie(trie);
+    
   EndTest();
 }
-*/
+
 void TestCreateDictArray() {
     StartTest("CreateDictArray");
 
@@ -116,8 +118,6 @@ void TestArrayBasic() {
     EndTest();
 }
 
-
-/*
 void TestArrayFile() {
   StartTest("ArrayFile");
 
@@ -126,32 +126,20 @@ void TestArrayFile() {
   assert(ContainsWordArray(array, "aals") == 1);
   assert(ContainsWordArray(array, "peter") == 0);
 
+  DestroyDictArray(array);
+    
   EndTest();
 }
-*/
-
-/*
-void TestArrayFile() {
-  StartTest("ArrayFile");
-
-  DictArray* array = LoadDictionaryArray("wordlist_small.txt");
-  assert(array != NULL);
-  assert(ContainsWordArray(array, "aals") == 1);
-  assert(ContainsWordArray(array, "peter") == 0);
-  
-  EndTest(); 
-}
-*/
 
 int main(void) {
   srand(21774);
-    /*
+
       TestCreateTrie();
       TestTrieBasic();
       TestTrieFile();
-      */
+
       TestCreateDictArray();
-      // TestArrayFile();
+      TestArrayFile();
       TestArrayBasic();
 
   return EXIT_SUCCESS;
