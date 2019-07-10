@@ -1,3 +1,5 @@
+  # Created by Dan Williams, 7/10/2019
+  
   #!/bin/bash
   
   echo "cores: $(cat /proc/cpuinfo | grep processor | wc -l)"
