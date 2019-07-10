@@ -1,3 +1,5 @@
+# Modified by Dan Williams, 7/10/2019
+
 all: hello example test
 
 # Points to the root of Google Test, relative to where this file is.
@@ -115,6 +117,10 @@ Assert007.o: Assert007.c Assert007.h
 
 hello: hello_world.c hello_world.h
 	gcc -g -o hello_world hello_world.c
+
+info:
+	chmod 755 system_info.sh 
+	./system_info.sh
 
 .PHONY: clean 
 
