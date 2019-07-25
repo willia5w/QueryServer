@@ -1,3 +1,4 @@
+// Modified by Daniel Williams 7/21/2019
 // CS 5007, Northeastern University, Seattle
 // Spring 2019
 // Adrienne Slaughter
@@ -52,7 +53,7 @@ TEST(Hashtable, Create) {
   EXPECT_FALSE(ht->buckets == NULL);
   EXPECT_EQ(NumElemsInHashtable(ht), 0);
   DestroyHashtable(ht, NULL);
-  
+
 }
 
 TEST(Hashtable, AddOneRemoveOne) {
@@ -70,10 +71,10 @@ TEST(Hashtable, AddOneRemoveOne) {
     EXPECT_EQ(NumElemsInHashtable(ht), 1);
 
     HTKeyValue junk;
-    RemoveFromHashtable(ht, kv.key, &junk); 
+    RemoveFromHashtable(ht, kv.key, &junk);
 
     DestroyThing(junk.value);
-    
+
     EXPECT_EQ(NumElemsInHashtable(ht), 0);
 
     DestroyHashtable(ht, &DestroyThing);
@@ -108,7 +109,7 @@ TEST(Hashtable, AddOneElemTwoTimes) {
     HTKeyValue kv;
     HTKeyValue old_kv;
     old_kv.value = NULL;
-    
+
     kv.key = FNVHashInt64(500);
     kv.value = thing1;
 
@@ -132,9 +133,9 @@ TEST(Hashtable, AddOneElemTwoTimes) {
     EXPECT_EQ(NumElemsInHashtable(ht), 1);
 
     // Because this was replaced, gotta free the value
-    EXPECT_EQ(old_kv.value, thing1); 
+    EXPECT_EQ(old_kv.value, thing1);
     DestroyThing(old_kv.value);
-    
+
     DestroyHashtable(ht, &DestroyThing);
     // thing2 is destroyed as part of the HT
 }
@@ -156,16 +157,16 @@ TEST(Hashtable, AddOneRemoveTwice) {
     EXPECT_EQ(NumElemsInHashtable(ht), 1);
 
     HTKeyValue junk;
-    result = RemoveFromHashtable(ht, kv.key, &junk); 
+    result = RemoveFromHashtable(ht, kv.key, &junk);
 
     EXPECT_EQ(result, 0);
     EXPECT_EQ(NumElemsInHashtable(ht), 0);
-    EXPECT_EQ(junk.value, thing1); 
-    
-    // Now that I've removed it from the table, I need to free it
-    DestroyMyThing((MyThing*)junk.value); 
+    EXPECT_EQ(junk.value, thing1);
 
-    result = RemoveFromHashtable(ht, kv.key, &junk); 
+    // Now that I've removed it from the table, I need to free it
+    DestroyMyThing((MyThing*)junk.value);
+
+    result = RemoveFromHashtable(ht, kv.key, &junk);
     EXPECT_EQ(result, -1);
     EXPECT_EQ(NumElemsInHashtable(ht), 0);
 
@@ -183,8 +184,8 @@ TEST(Hashtable, AddMultipleItems) {
     // Make KeyValue Pair
     HTKeyValue kv;
 
-    HTKeyValue old_kv; 
-    
+    HTKeyValue old_kv;
+
     kv.key = FNVHashInt64(thing1->number);
     kv.value = thing1;
     PutInHashtable(ht, kv, &old_kv);
@@ -212,12 +213,14 @@ TEST(Hashtable, LookupInHashtable) {
     MyThing *thing2 = CreateMyThing(381937362, second);
     MyThing *thing3 = CreateMyThing(9284, third);
 
+
+
     EXPECT_EQ(NumElemsInHashtable(ht), 0);
 
     // Make KeyValue Pair
     HTKeyValue kv1;
     HTKeyValue old_kv;
-    
+
     kv1.key = FNVHashInt64(thing1->number);
     kv1.value = thing1;
     PutInHashtable(ht, kv1, &old_kv);
@@ -228,7 +231,7 @@ TEST(Hashtable, LookupInHashtable) {
     kv2.key = FNVHashInt64(thing2->number);
     kv2.value = thing2;
     PutInHashtable(ht, kv2, &old_kv);
-    
+
     ASSERT_EQ(NumElemsInHashtable(ht), 2);
 
     HTKeyValue kv3;
@@ -240,7 +243,7 @@ TEST(Hashtable, LookupInHashtable) {
 
     HTKeyValue theThing;
     theThing.key = 0u;
-    theThing.value = NULL; 
+    theThing.value = NULL;
 
     // Now, lookup:
     int result = LookupInHashtable(ht,
@@ -253,6 +256,13 @@ TEST(Hashtable, LookupInHashtable) {
     EXPECT_EQ(NumElemsInHashtable(ht), 3);
 
     // TODO: Test looking up something not in the table
+    MyThing *thing4 = CreateMyThing(1234, fourth);
+
+     int false_result = LookupInHashtable(ht,
+        FNVHashInt64(thing4->number),
+        &theThing);
+
+    EXPECT_EQ(false_result, -1);
 
     DestroyHashtable(ht, &DestroyThing);
 }
@@ -267,7 +277,7 @@ TEST(Hashtable, TwoElemsOneBucket) {
     // Make KeyValue Pair
     HTKeyValue kv, kv2;
     HTKeyValue old_kv;
-    
+
     kv.key = 5;
     kv.value = thing1;
     PutInHashtable(ht, kv, &old_kv);
@@ -300,7 +310,7 @@ TEST(Hashtable, TwoElemsOneBucket) {
 
 TEST(Hashtable, Resize) {
   Hashtable ht = CreateHashtable(15);
-  
+
   for (unsigned int i = 0; i < 60; i++) {
     // do the insert
     SomeNumPtr np = static_cast<SomeNumPtr>(malloc(sizeof(someNum)));
@@ -311,7 +321,7 @@ TEST(Hashtable, Resize) {
     newkv.value = static_cast<void *>(np);
     ASSERT_EQ(0, PutInHashtable(ht, newkv, &old_kv));
 
-    //printf("i = %d\n", i); 
+    //printf("i = %d\n", i);
 
     // test double insert
     ASSERT_EQ(2, PutInHashtable(ht, newkv, &old_kv));
@@ -327,7 +337,7 @@ TEST(Hashtable, Resize) {
     ASSERT_EQ(-1, LookupInHashtable(ht, i+1, &old));
 
     // test bad remove
-    ASSERT_EQ(-1, RemoveFromHashtable(ht, i+1, &old)); 
+    ASSERT_EQ(-1, RemoveFromHashtable(ht, i+1, &old));
 
     // test good remove and reinsert
     old.key = -100;
@@ -350,15 +360,15 @@ TEST(HashtableIter, CreateDestroy) {
   // Create an iter, Destroy it
   HTIter iter = CreateHashtableIterator(ht);
 
-  ASSERT_EQ(NULL, iter); 
+  ASSERT_EQ(NULL, iter);
 
-  DestroyHashtable(ht, &DestroyThing); 
+  DestroyHashtable(ht, &DestroyThing);
 }
 
 TEST(HashtableIter, AddAndIterate) {
   const int num_items = 10; //45;
   Hashtable ht = CreateHashtable(5);
-  
+
   for (int i = 0; i < num_items; i++) {
     // do the insert
     SomeNumPtr np = static_cast<SomeNumPtr>(malloc(sizeof(someNum)));
@@ -369,23 +379,23 @@ TEST(HashtableIter, AddAndIterate) {
     newkv.value = static_cast<void *>(np);
     ASSERT_EQ(0, PutInHashtable(ht, newkv, &old_kv));
   }
-  
-  ASSERT_EQ(num_items, NumElemsInHashtable(ht)); 
-  
+
+  ASSERT_EQ(num_items, NumElemsInHashtable(ht));
+
   HTIter iter = CreateHashtableIterator(ht);
-  
+
   // Now, get each item, but make sure that
   // all items only get returned once.
   int payload_counts[num_items] = { 0 };
   ASSERT_NE(0, HTIteratorHasMore(iter));
-  
+
   HTKeyValue item;
   //  int result = HTIteratorGet(it, item);
 
   for (int i = 0; i < num_items; i++) {
     int result = HTIteratorGet(iter, &item);
     ASSERT_EQ(0, result);
-    
+
     payload_counts[((SomeNumPtr)(item.value))->num]++;
     if (i < (num_items -1)) {
       ASSERT_NE(0, HTIteratorHasMore(iter));
@@ -393,7 +403,7 @@ TEST(HashtableIter, AddAndIterate) {
     else {
       ASSERT_EQ(0, HTIteratorHasMore(iter));
     }
-    HTIteratorNext(iter); 
+    HTIteratorNext(iter);
   }
   for (int i = 0; i < num_items; i++) {
     ASSERT_EQ(1, payload_counts[i]);
