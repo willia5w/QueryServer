@@ -36,4 +36,9 @@ void CrawlFilesToMap(const char *dir, DocIdMap map) {
   struct dirent **namelist;
   int n;
   n = scandir(dir, &namelist, 0, alphasort);
+
+  for (int i =0; i < 10; i++) {
+    printf("%s\n", namelist[i]->d_name);
+  }
 }
+
