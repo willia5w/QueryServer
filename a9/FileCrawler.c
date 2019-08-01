@@ -1,3 +1,4 @@
+// Modified by Dan Williams 7/31/2019
 /*
  *  Created by Adrienne Slaughter
  *  CS 5007 Summer 2019
@@ -34,11 +35,37 @@ void CrawlFilesToMap(const char *dir, DocIdMap map) {
   // Be sure to lookup how scandir works. Don't forget about memory use.
   struct stat s;
   struct dirent **namelist;
-  int n;
-  n = scandir(dir, &namelist, 0, alphasort);
 
-  for (int i =0; i < 10; i++) {
-    printf("%s\n", namelist[i]->d_name);
+  if (stat(dir, &s) < 0) { // Run stat
+    printf("FAIL!");
+  }
+  if (S_ISDIR(s.st_mode) == 0) {  // Base case, file ready for Put
+    PutFileInMap(dir, map);
+    return;
+  } else if (S_ISDIR(s.st_mode) != 0) {  // Case: Is Directory
+    int n;
+    n = scandir(dir, &namelist, 0, alphasort);  // Run scandir()
+    for (int i = 2; i < n; i++) { // Start index 2 to skip ".."
+      struct stat st;  // Instantiate new stat
+      char* temp_file_name = malloc(sizeof(char) * 100);
+      snprintf(temp_file_name, strlen(dir) + strlen(namelist[i]->d_name) + 2,
+      "%s%s", dir, namelist[i]->d_name);
+      stat(temp_file_name, &st); // Run stat for st_mode tests
+
+      if (S_ISDIR(st.st_mode) != 0) {  // Case: Directory
+        char file_name[100];
+        strcpy(file_name, temp_file_name);
+        strcat(file_name, "/");  //Add "/" to end of dir
+        free(temp_file_name);
+        CrawlFilesToMap(file_name, map);
+      } else if (S_ISDIR(st.st_mode) == 0) {
+        CrawlFilesToMap(temp_file_name, map);
+      }
+    }
+    for (int i = 0; i < n; i++) {
+      free(namelist[i]);
+    }
+    free(namelist);
   }
 }
 

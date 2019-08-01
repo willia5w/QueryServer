@@ -1,3 +1,4 @@
+//Modified by Dan Williams 7/31/2019
 /*
  *  Created by Adrienne Slaughter
  *  CS 5007 Summer 2019
@@ -25,13 +26,22 @@
 #include "Hashtable.h"
 #include "DocSet.h"
 
+/**
+ * A SearchResultIter goes through every element in the hashtable,
+ * which are all lists of document locations.
+ *
+ */
 SearchResultIter CreateSearchResultIter(DocumentSet set) {
   SearchResultIter iter =
     (SearchResultIter)malloc(sizeof(struct searchResultIter));
 
     // STEP 7: Implement the initialization of the iter.
-
-  return iter;
+  iter = CreateHashtableIterator(set->doc_index);
+  if (iter == NULL) {
+    return -1;
+  } else {
+    return iter;
+  }
 }
 
 void DestroySearchResultIter(SearchResultIter iter) {
@@ -46,8 +56,6 @@ void DestroySearchResultIter(SearchResultIter iter) {
   free(iter);
 }
 
-
-
 SearchResultIter FindMovies(MovieTitleIndex index, char *term) {
   DocumentSet set = GetDocumentSet(index, term);
   if (set == NULL) {
@@ -61,12 +69,17 @@ SearchResultIter FindMovies(MovieTitleIndex index, char *term) {
 
 int SearchResultGet(SearchResultIter iter, SearchResult output) {
   // STEP 9: Implement SearchResultGet
+  HTIteratorGet(iter->doc_iter, output);
   return 0;
 }
 
 int SearchResultNext(SearchResultIter iter) {
   // STEP 8: Implement SearchResultNext
-  return 0;
+  if (SearchResultIterHasMore(iter) != 0) {
+    return (HTIteratorNext(iter->doc_iter));
+  } else {
+    return 0;
+  }
 }
 
 // Return 0 if no more
@@ -80,3 +93,4 @@ int SearchResultIterHasMore(SearchResultIter iter) {
 
   return 1;
 }
+

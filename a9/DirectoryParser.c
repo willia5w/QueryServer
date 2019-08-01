@@ -1,3 +1,5 @@
+// Modified by Dan Williams 7/31/2019
+
 /*
  *  Created by Adrienne Slaughter
  *  CS 5007 Summer 2019
@@ -30,12 +32,29 @@
 /**
  * \fn Parses the files that are in a provided DocIdMap.
  *
+ * Given a map of all the files that we want to index
+ * and search, open each file and index the contents to index
+ *
+ * \param docs the DocIdMap that contains all the files we want to parse.
+ * \param the index to hold all the indexed docs.
+ *
+ * \return The number of records parsed
  */
 int ParseTheFiles(DocIdMap docs, MovieTitleIndex index) {
   // STEP 6: Implement ParseTheFiles.
   // Iterate through all the docs, and add to the index,
   // utilizing IndexTheFile.
-  return -1; 
+  DocIdIter iter = CreateDocIdIterator(docs);
+  
+  while (iter.HasNext(doc)) {
+    iter = iter.Next();
+    // Get DocId as PayLoad
+  }
+  DestroyDocIdIterator(iter);
+  
+  char* file = GetFileFromId(docs, docId);
+  
+  return IndexTheFile(char *file, uint64_t doc_id, index); 
 }
 
 
@@ -63,3 +82,4 @@ int IndexTheFile(char *file, uint64_t doc_id, MovieTitleIndex index) {
     return row;
   }
 }
+

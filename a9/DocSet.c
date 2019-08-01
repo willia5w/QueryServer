@@ -1,3 +1,4 @@
+// Modified by Dan Williams 7/31/2019
 /*
  *  Created by Adrienne Slaughter
  *  CS 5007 Summer 2019
@@ -24,15 +25,56 @@
 #include "Hashtable.h"
 #include "Util.h"
 
+/**
+ * Adds a reference to a doc/row to the set.
+ *
+ * \param set The DocumentSet to add the movie to
+ * \param doc_id Which document/file the movie is stored in
+ * \param row_id Which row in the file the movie can be found.
+ *
+ * \return 0 if successful.
+ */
 int AddDocInfoToSet(DocumentSet set,  uint64_t docId, int rowId) {
   // STEP 4: Implement AddDocInfoToSet.
   // Make sure there are no duplicate rows or docIds.
-  return -1;
+
+  int* add_rowId[100] = malloc(sizeof(int) * 100);
+  add_rowId = rowId;
+
+  if (DocumentSetContainsDoc(set, docId) == 0) {
+    free(add_rowId);
+    return -1;
+  } else {
+      HTKeyValue new_doc;
+      new_doc.key = docId;  // Update key
+      new_doc.value = add_rowId;  // Update value
+      HTKeyValue old_kpv; // Provide old kvp
+
+      PutFileInMap(set->desc, set->doc_index); // Add row data to create Movie
+      PutInHashtable(set->doc_index, new_doc, old_kpv);
+      return 0;
+  }
 }
 
+/**
+ * Determines if a DocumentSet contains movies from a specified
+ * document or file.
+ *
+ * \param set The DocumentSet to query
+ * \param doc_id Which doc to look for.
+ *
+ * \return 0 if the doc_id is found, -1 otherwise.
+ */
 int DocumentSetContainsDoc(DocumentSet set, uint64_t docId) {
   // STEP 5: Implement DocumentSetContainsDoc
-  return -1;
+  HTKeyValuePtr result;
+  int check = LookupInHashtable(set->doc_index, docId, result);
+
+  if (check == 0) {
+    return 0;
+  } else {
+    return -1;
+  }
 }
 
 void PrintOffsetList(LinkedList list) {
@@ -79,3 +121,4 @@ void DestroyDocumentSet(DocumentSet set) {
   // Free set
   free(set);
 }
+
